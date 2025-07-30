@@ -7,7 +7,15 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
-<body class="container mx-auto p-4">
+<body >
+<header class="bg-gray-800 text-white">
+    <div class="container mx-auto p-4">
+        <h2 class="text-2xl font-bold">
+            Languini
+        </h2>
+    </div>
+</header>
+<div class="container mx-auto p-4">
     <select class="border border-gray-300 rounded p-2"
             name="directories"
             id="directories"
@@ -17,6 +25,8 @@
         <option value="directory-2">Directory-2</option>
         <option value="directory-3">Directory-3</option>
     </select>
+</div>
+
 </body>
 <script>
     const directories = () => {
