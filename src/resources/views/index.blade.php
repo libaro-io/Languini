@@ -26,6 +26,31 @@
             <option value="{{ $fileName }}" {{ request()->get('filename') === $fileName ? 'selected' : '' }}>{{ $fileName }}</option>
         @endforeach
     </select>
+
+    @if($translationKeys)
+        <table class="table-auto">
+            <thead>
+            <tr>
+                <th>Key</th>
+                <th>{{ config('app.locale') }}</th>
+                @foreach($translatableLanguages as $lang)
+                    <th>{{ $lang }}</th>
+                @endforeach
+            </tr>
+            </thead>
+            <tbody>
+                @foreach($translationKeys as  $translationKeyItems)
+                    <tr>
+                        <td>{{ \Illuminate\Support\Arr::get($translationKeyItems, 'key') }}</td>
+                        <td>{{ \Illuminate\Support\Arr::get($translationKeyItems, config('app.locale')) }}</td>
+                        @foreach($translatableLanguages as $lang)
+                            <td>{{ \Illuminate\Support\Arr::get($translationKeyItems, $lang) }}</td>
+                        @endforeach
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    @endif
 </div>
 
 </body>
