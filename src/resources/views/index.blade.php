@@ -73,8 +73,7 @@
                                         name="{{request()->get('filename')}}[{{ \Illuminate\Support\Arr::get($translationKeyItems, 'key') }}][{{ $lang }}]"
                                         class="w-full border border-gray-300 rounded p-2 mt-1 resize-none"
                                         placeholder="Enter translation for {{ $lang }}"
-                                >{!!  \Illuminate\Support\Arr::get($translationKeyItems, $lang)  !!}
-                                </textarea>
+                                >{!!  \Illuminate\Support\Arr::get($translationKeyItems, $lang)  !!}</textarea>
                             </td>
                         @endforeach
                     </tr>
