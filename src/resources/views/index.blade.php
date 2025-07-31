@@ -23,14 +23,17 @@
             name="filename"
             id="filename"
             onchange="files()">
-        <option value="directory">Select a directory</option>
+        <option disabled="disabled" selected="selected" value="directory">Select a directory</option>
         @foreach($fileNames as $fileName)
             <option value="{{ $fileName }}" {{ request()->get('filename') === $fileName ? 'selected' : '' }}>{{ $fileName }}</option>
         @endforeach
     </select>
 
     @if($translationKeys)
-        <form action="{{route('languini.update')}}" method="POST" id="translationForm">
+        <form
+                onkeyup="if(event.keyCode === 13) { submitForm(); }"
+                action="{{route('languini.update')}}" method="POST" id="translationForm"
+        >
             @csrf
             <table class="table-auto w-full mt-4 border-collapse border border-gray-300">
                 <thead
@@ -60,18 +63,18 @@
                         >{{ \Illuminate\Support\Arr::get($translationKeyItems, 'key') }}</td>
                         <td
                                 class="px-4 py-2 border-r border-gray-300 text-sm w-2/12"
-                        >{{ \Illuminate\Support\Arr::get($translationKeyItems, config('app.locale')) }}</td>
+                        >{!! \Illuminate\Support\Arr::get($translationKeyItems, config('app.locale'))!!}</td>
                         @foreach($translatableLanguages as $lang)
                             <td
                                     class="px-4 py-2 border-r border-gray-300"
                             >
-                                <input
+                                <textarea
                                         type="text"
-                                        name="translations[{{ \Illuminate\Support\Arr::get($translationKeyItems, 'key') }}][{{ $lang }}]"
-                                        value="{{ \Illuminate\Support\Arr::get($translationKeyItems, $lang) }}"
-                                        class="w-full border border-gray-300 rounded p-2 mt-1"
+                                        name="{{request()->get('filename')}}[{{ \Illuminate\Support\Arr::get($translationKeyItems, 'key') }}][{{ $lang }}]"
+                                        class="w-full border border-gray-300 rounded p-2 mt-1 resize-none"
                                         placeholder="Enter translation for {{ $lang }}"
-                                >
+                                >{!!  \Illuminate\Support\Arr::get($translationKeyItems, $lang)  !!}
+                                </textarea>
                             </td>
                         @endforeach
                     </tr>
@@ -83,7 +86,7 @@
     @endif
 </div>
 <div class="sticky bottom-0 bg-gray-800 text-white p-4 mt-4">
-    <div class="container mx-auto px-4 flex justify-end">
+    <div class="px-4 flex justify-end">
         <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded hover:cursor-pointer"
                 onclick="submitForm()">
             Submit
