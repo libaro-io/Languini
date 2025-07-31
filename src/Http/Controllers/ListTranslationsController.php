@@ -90,7 +90,7 @@ class ListTranslationsController
         foreach ($masterKeys as $key) {
             $row = ['key' => $key];
             foreach ($languages as $lang) {
-                $row[$lang] = $allTranslations[$lang][$key] ?? '---'; // when no translation is found, it displays the fallback
+                $row[$lang] = $allTranslations[$lang][$key] ?? ''; // when no translation is found, it displays the fallback
             }
             $resultTable[] = $row;
         }

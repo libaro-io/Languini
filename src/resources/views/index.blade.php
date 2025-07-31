@@ -8,15 +8,17 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <title>Languini</title>
 </head>
-<body>
+<body class="min-h-dvh flex flex-col">
 <header class="bg-gray-800 text-white">
-    <div class="container mx-auto p-4">
-        <h2 class="text-2xl font-bold">
-            Languini
-        </h2>
+    <div class=" p-4">
+        <a href="{{route('languini.index')}}">
+            <h1 class="text-2xl font-bold">
+                Languini
+            </h1>
+        </a>
     </div>
 </header>
-<div class="container mx-auto p-4">
+<div class="p-4 flex-1">
     <select class="border border-gray-300 rounded p-2"
             name="filename"
             id="filename"
@@ -28,33 +30,76 @@
     </select>
 
     @if($translationKeys)
-        <table class="table-auto">
-            <thead>
-            <tr>
-                <th>Key</th>
-                <th>{{ config('app.locale') }}</th>
-                @foreach($translatableLanguages as $lang)
-                    <th>{{ $lang }}</th>
-                @endforeach
-            </tr>
-            </thead>
-            <tbody>
+        <form action="{{route('languini.update')}}" method="POST" id="translationForm">
+            @csrf
+            <table class="table-auto w-full mt-4 border-collapse border border-gray-300">
+                <thead
+                        class="bg-gray-200 sticky top-0 z-10"
+                >
+                <tr class="border-b border-gray-300">
+                    <th class="px-4 py-2 font-bold text-gray-700 border-r border-gray-300">
+                        Key
+                    </th>
+                    <th
+                            class="px-4 py-2 uppercase font-bold text-gray-700 border-r border-gray-300"
+                    >
+                        {{ config('app.locale') }}
+                    </th>
+                    @foreach($translatableLanguages as $lang)
+                        <th class="px-4 py-2 uppercase font-bold text-gray-700 border-r border-gray-300">
+                            {{ $lang }}
+                        </th>
+                    @endforeach
+                </tr>
+                </thead>
+                <tbody>
                 @foreach($translationKeys as  $translationKeyItems)
-                    <tr>
-                        <td>{{ \Illuminate\Support\Arr::get($translationKeyItems, 'key') }}</td>
-                        <td>{{ \Illuminate\Support\Arr::get($translationKeyItems, config('app.locale')) }}</td>
+                    <tr class="border-b border-gray-300 hover:bg-gray-100 transition-colors duration-200">
+                        <td
+                                class="px-4 py-2 border-r border-gray-300 text-sm break-all w-3/12"
+                        >{{ \Illuminate\Support\Arr::get($translationKeyItems, 'key') }}</td>
+                        <td
+                                class="px-4 py-2 border-r border-gray-300 text-sm w-2/12"
+                        >{{ \Illuminate\Support\Arr::get($translationKeyItems, config('app.locale')) }}</td>
                         @foreach($translatableLanguages as $lang)
-                            <td>{{ \Illuminate\Support\Arr::get($translationKeyItems, $lang) }}</td>
+                            <td
+                                    class="px-4 py-2 border-r border-gray-300"
+                            >
+                                <input
+                                        type="text"
+                                        name="translations[{{ \Illuminate\Support\Arr::get($translationKeyItems, 'key') }}][{{ $lang }}]"
+                                        value="{{ \Illuminate\Support\Arr::get($translationKeyItems, $lang) }}"
+                                        class="w-full border border-gray-300 rounded p-2 mt-1"
+                                        placeholder="Enter translation for {{ $lang }}"
+                                >
+                            </td>
                         @endforeach
                     </tr>
                 @endforeach
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+
+        </form>
     @endif
 </div>
-
+<div class="sticky bottom-0 bg-gray-800 text-white p-4 mt-4">
+    <div class="container mx-auto px-4 flex justify-end">
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded hover:cursor-pointer"
+                onclick="submitForm()">
+            Submit
+        </button>
+    </div>
+</div>
 </body>
 <script>
+    const submitForm = () => {
+        const form = document.getElementById('translationForm');
+        if (form) {
+            form.submit();
+        } else {
+            alert('Form not found.');
+        }
+    }
     const files = () => {
         const selectElement = document.getElementById('filename');
         const selectedValue = selectElement.value;
