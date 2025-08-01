@@ -19,15 +19,22 @@
     </div>
 </header>
 <div class="p-4 flex-1">
-    <select class="border border-gray-300 rounded p-2"
-            name="filename"
-            id="filename"
-            onchange="files()">
-        <option disabled="disabled" selected="selected" value="directory">Select a directory</option>
-        @foreach($fileNames as $fileName)
-            <option value="{{ $fileName }}" {{ request()->get('filename') === $fileName ? 'selected' : '' }}>{{ $fileName }}</option>
-        @endforeach
-    </select>
+    <div class="flex items-center justify-between mb-4">
+        <select class="border border-gray-300 rounded p-2"
+                name="filename"
+                id="filename"
+                onchange="files()">
+            <option disabled="disabled" selected="selected" value="directory">Select a directory</option>
+            @foreach($fileNames as $fileName)
+                <option value="{{ $fileName }}" {{ request()->get('filename') === $fileName ? 'selected' : '' }}>{{ $fileName }}</option>
+            @endforeach
+        </select>
+        <a href="">
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-2">
+                Translate with AI
+            </button>
+        </a>
+    </div>
 
     @if($translationKeys)
         <form
