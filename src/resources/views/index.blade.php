@@ -31,8 +31,8 @@
 
     @if($translationKeys)
         <form
-                onkeyup="if(event.keyCode === 13) { submitForm(); }"
-                action="{{route('languini.update')}}" method="POST" id="translationForm"
+                onkeyup="if (e.keyCode === 13) { submitForm(); }"
+                method="POST" id="translationForm"
         >
             @csrf
             <table class="table-auto w-full mt-4 border-collapse border border-gray-300">
@@ -63,17 +63,16 @@
                         >{{ \Illuminate\Support\Arr::get($translationKeyItems, 'key') }}</td>
                         <td
                                 class="px-4 py-2 border-r border-gray-300 text-sm w-2/12"
-                        >{!! \Illuminate\Support\Arr::get($translationKeyItems, config('app.locale'))!!}</td>
+                        >{!! \Illuminate\Support\Arr::get($translationKeyItems, config('app.locale')) !!}</td>
                         @foreach($translatableLanguages as $lang)
                             <td
                                     class="px-4 py-2 border-r border-gray-300"
                             >
                                 <textarea
-                                        type="text"
-                                        name="{{request()->get('filename')}}[{{ \Illuminate\Support\Arr::get($translationKeyItems, 'key') }}][{{ $lang }}]"
+                                        name="{{ request()->get('filename') }}[{{ \Illuminate\Support\Arr::get($translationKeyItems, 'key') }}][{{ $lang }}]"
                                         class="w-full border border-gray-300 rounded p-2 mt-1 resize-none"
                                         placeholder="Enter translation for {{ $lang }}"
-                                >{!!  \Illuminate\Support\Arr::get($translationKeyItems, $lang)  !!}</textarea>
+                                >{!! \Illuminate\Support\Arr::get($translationKeyItems, $lang) !!}</textarea>
                             </td>
                         @endforeach
                     </tr>
