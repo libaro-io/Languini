@@ -103,7 +103,11 @@
     const submitForm = () => {
         const form = document.getElementById('translationForm');
         if (form) {
-            form.submit();
+           if(confirm('This will overwrite the existing translations (except for the default language). Are you sure you want to proceed?')) {
+               form.submit();
+            } else {
+                return;
+           }
         } else {
             alert('Form not found.');
         }
