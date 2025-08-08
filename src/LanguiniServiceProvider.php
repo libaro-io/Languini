@@ -14,7 +14,7 @@ class LanguiniServiceProvider extends ServiceProvider
 
         $this->publishes([
             __DIR__.'/config/languini.php' => config_path('languini.php'),
-        ], 'config');
+        ], 'languini');
 
         $this->loadRoutesFrom(__DIR__.'/routes/web.php');
         $this->loadViewsFrom(__DIR__.'/resources/views', 'languini');
