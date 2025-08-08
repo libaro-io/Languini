@@ -29,16 +29,17 @@
                 <option value="{{ $fileName }}" {{ request()->get('filename') === $fileName ? 'selected' : '' }}>{{ $fileName }}</option>
             @endforeach
         </select>
-        <a href="">
-            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-2">
-                Translate with AI
-            </button>
-        </a>
+        <button onclick="translateUsingAi()" id="translate-button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-2 flex items-center justify-center">
+            <svg id="translate-spinner" class="hidden animate-spin h-5 w-5 mr-2 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+            </svg>
+            <span id="translate-label">Translate with AI</span>
+        </button>
     </div>
 
     @if($translationKeys)
         <form
-                onkeyup="if (e.keyCode === 13) { submitForm(); }"
                 method="POST" id="translationForm"
         >
             @csrf
@@ -122,6 +123,46 @@
             const url = new URL(window.location.href);
             url.searchParams.set('filename', selectedValue);
             window.location.href = url.toString();
+        }
+    }
+
+    const translateUsingAi = async () => {
+        const selectElement = document.getElementById('filename');
+        const selectedValue = selectElement.value;
+        const translateEndpoint = "{{ route('languini.ai-translate') }}"
+        const translatableLanguages = {!! json_encode($translatableLanguages) !!};
+        const button = document.getElementById('translate-button');
+        const spinner = document.getElementById('translate-spinner');
+        const label = document.getElementById('translate-label');
+
+        button.disabled = true;
+        button.classList.add('opacity-50', 'cursor-not-allowed');
+        spinner.classList.remove('hidden');
+        label.classList.add('hidden');
+
+        try {
+            const response = await fetch(translateEndpoint, {
+                method: "POST",
+                body: new URLSearchParams({ filename: selectedValue }),
+            });
+
+            const translationsJson = await response.json();
+
+            translationsJson.translations.forEach(item => {
+                translatableLanguages.forEach(language => {
+                    const textarea = document.querySelector(`textarea[name="${selectedValue}[${item.key}][${language}]"]`);
+                    if (textarea) {
+                        textarea.value = item[language];
+                    }
+                });
+            });
+        } catch (error) {
+            console.error('Translation failed', error);
+        } finally {
+            button.disabled = false;
+            button.classList.remove('opacity-50', 'cursor-not-allowed');
+            spinner.classList.add('hidden');
+            label.classList.remove('hidden');
         }
     }
 </script>

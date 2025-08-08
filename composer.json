@@ -1,5 +1,8 @@
 {
     "name": "libaro-io/languini",
+    "keywords": [
+        "dev", "laravel", "translations", "manager", "languini", "pasta"
+    ],
     "autoload": {
         "psr-4": {
             "LibaroIo\\Languini\\": "src/"
@@ -9,12 +12,17 @@
         {
             "name": "Robin Rosiers",
             "email": "robin@libaro.be"
+        },
+        {
+            "name": "Martijn Tetaert",
+            "email": "martijn@libaro.be"
         }
     ],
     "require": {
         "php": "^8.3|^8.4",
         "illuminate/contracts": "^10.0||^11.0||^12.0",
-        "illuminate/support": "^12.21"
+        "illuminate/support": "^12.21",
+        "openai-php/laravel": "^0.15.0"
     },
     "require-dev": {
         "nunomaduro/collision": "^8.1.1||^7.10.0",
@@ -22,7 +30,10 @@
         "laravel/framework": "^12"
     },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
     },
     "extra": {
         "laravel": {
