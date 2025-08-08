@@ -1,5 +1,7 @@
 # Languini
 
+![Languini](src/public/image.png)
+
 ## pakages used
 - https://github.com/openai-php/laravel
 
@@ -23,3 +25,7 @@ Set .env variables:
 OPENAI_API_KEY=sk-...
 OPENAI_ORGANIZATION=org-...
 ```
+
+## Usage
+
+To use this package, simply go to your browser and navigate to the `/languini` url. Fill in the missing translations and save!
