@@ -1,4 +1,5 @@
 {
+    "version": "1.0.0",
     "name": "libaro-io/languini",
     "keywords": [
         "dev", "laravel", "translations", "manager", "languini", "pasta"
