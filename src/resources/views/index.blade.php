@@ -129,7 +129,7 @@
     const translateUsingAi = async () => {
         const selectElement = document.getElementById('filename');
         const selectedValue = selectElement.value;
-        const translateEndpoint = "{{ route('languini.ai-translate') }}"
+        const translateEndpoint = "{{ route('languini.ai-translate') }}";
         const translatableLanguages = {!! json_encode($translatableLanguages) !!};
         const button = document.getElementById('translate-button');
         const spinner = document.getElementById('translate-spinner');
@@ -141,21 +141,43 @@
         label.classList.add('hidden');
 
         try {
-            const response = await fetch(translateEndpoint, {
-                method: "POST",
-                body: new URLSearchParams({ filename: selectedValue }),
-            });
+            // Collect all keys from the table
+            const allKeys = Array.from(document.querySelectorAll(`textarea[name^="${selectedValue}"]`))
+                .map(textarea => {
+                    const match = textarea.name.match(/\[([^\]]+)\]\[([^\]]+)\]$/);
+                    return match ? match[1] : null;
+                })
+                .filter(Boolean);
 
-            const translationsJson = await response.json();
+            // Remove duplicates
+            const uniqueKeys = [...new Set(allKeys)];
 
-            translationsJson.translations.forEach(item => {
-                translatableLanguages.forEach(language => {
-                    const textarea = document.querySelector(`textarea[name="${selectedValue}[${item.key}][${language}]"]`);
-                    if (textarea) {
-                        textarea.value = item[language];
-                    }
+            // Split keys into chunks of 50
+            const chunkSize = 50;
+            for (let i = 0; i < uniqueKeys.length; i += chunkSize) {
+                const chunkKeys = uniqueKeys.slice(i, i + chunkSize);
+
+                // Send only the chunk to the backend
+                const response = await fetch(translateEndpoint, {
+                    method: "POST",
+                    body: new URLSearchParams({
+                        filename: selectedValue,
+                        keys: JSON.stringify(chunkKeys) // send chunk
+                    }),
                 });
-            });
+
+                const translationsJson = await response.json();
+
+                // Update the textareas
+                translationsJson.translations.forEach(item => {
+                    translatableLanguages.forEach(language => {
+                        const textarea = document.querySelector(`textarea[name="${selectedValue}[${item.key}][${language}]"]`);
+                        if (textarea) {
+                            textarea.value = item[language];
+                        }
+                    });
+                });
+            }
         } catch (error) {
             console.error('Translation failed', error);
         } finally {
