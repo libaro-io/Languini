@@ -1,5 +1,5 @@
 {
-    "version": "1.0.4",
+    "version": "1.0.5",
     "name": "libaro/languini",
     "license": "MIT",
     "keywords": [
@@ -23,7 +23,7 @@
     "require": {
         "php": "^8.3|^8.4",
         "illuminate/contracts": "^10.0||^11.0||^12.0",
-        "illuminate/support": "^12.21",
+        "illuminate/support": "^10.0||^11.0||^12.0",
         "openai-php/laravel": "^0.15.0"
     },
     "require-dev": {
