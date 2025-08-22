@@ -8,7 +8,7 @@
 ## Installation
 
 ```shell
-composer require libaro-io/languini --dev
+composer require libaro/languini --dev
 ```
 
 You can publish the configuration file using
