@@ -1,6 +1,7 @@
 {
     "version": "1.0.3",
     "name": "libaro/languini",
+    "license": "MIT",
     "keywords": [
         "dev", "laravel", "translations", "manager", "languini", "pasta"
     ],

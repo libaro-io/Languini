@@ -47,6 +47,7 @@ Please review [our security policy](../../security/policy) on how to report secu
 ## Credits
 
 - [Robin Rosiers](https://github.com/RosiersRobin)
+- [Martijn Tetaert](https://github.com/martijnlibaro)
 - [All Contributors](../../contributors)
 
 ## License
