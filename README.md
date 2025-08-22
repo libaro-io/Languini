@@ -1,6 +1,6 @@
 # Languini
 
-![Languini](src/public/image.png)
+![Languini](src/public/BBF6C969-8B94-4C61-A512-FF252B6D22E4.png)
 
 ## pakages used
 - https://github.com/openai-php/laravel
