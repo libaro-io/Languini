@@ -65,22 +65,41 @@
                 </thead>
                 <tbody>
                 @foreach($translationKeys as  $translationKeyItems)
-                    <tr class="border-b border-gray-300 hover:bg-gray-100 transition-colors duration-200">
+                    @php
+                        $baseValue = \Illuminate\Support\Arr::get($translationKeyItems, config('app.locale'));
+                        $isInvalid = is_array($baseValue) && empty($baseValue);
+                    @endphp
+                    <tr class="border-b border-gray-300 transition-colors duration-200 {{ $isInvalid ? 'bg-red-50 hover:bg-red-100' : 'hover:bg-gray-100' }}">
                         <td
-                                class="px-4 py-2 border-r border-gray-300 text-sm break-all w-3/12"
-                        >{{ \Illuminate\Support\Arr::get($translationKeyItems, 'key') }}</td>
+                                class="px-4 py-2 border-r border-gray-300 text-sm break-all w-3/12 {{ $isInvalid ? 'text-red-600 font-semibold' : '' }}"
+                        >
+                            {{ \Illuminate\Support\Arr::get($translationKeyItems, 'key') }}
+                            @if($isInvalid)
+                                <span class="text-xs text-red-500 ml-1">(Invalid: empty array)</span>
+                            @endif
+                        </td>
                         <td
-                                class="px-4 py-2 border-r border-gray-300 text-sm w-2/12"
-                        >{!! \Illuminate\Support\Arr::get($translationKeyItems, config('app.locale')) !!}</td>
+                                class="px-4 py-2 border-r border-gray-300 text-sm w-2/12 {{ $isInvalid ? 'text-red-600' : '' }}"
+                        >
+                            @if($isInvalid)
+                                <span class="text-red-500 font-mono">[]</span>
+                            @else
+                                {{ $baseValue ?? '' }}
+                            @endif
+                        </td>
                         @foreach($translatableLanguages as $lang)
                             <td
                                     class="px-4 py-2 border-r border-gray-300"
                             >
                                 <textarea
                                         name="{{ request()->get('filename') }}[{{ \Illuminate\Support\Arr::get($translationKeyItems, 'key') }}][{{ $lang }}]"
-                                        class="w-full border border-gray-300 rounded p-2 mt-1 resize-none"
+                                        class="w-full border border-gray-300 rounded p-2 mt-1 resize-none {{ $isInvalid ? 'bg-gray-100 text-gray-500 cursor-not-allowed' : '' }}"
                                         placeholder="Enter translation for {{ $lang }}"
-                                >{!! \Illuminate\Support\Arr::get($translationKeyItems, $lang) !!}</textarea>
+                                        @if($isInvalid) disabled @endif
+                                >@php
+                                    $langValue = \Illuminate\Support\Arr::get($translationKeyItems, $lang);
+                                    echo is_array($langValue) ? '[]' : ($langValue ?? '');
+                                @endphp</textarea>
                             </td>
                         @endforeach
                     </tr>

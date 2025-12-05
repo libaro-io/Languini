@@ -90,8 +90,14 @@ class LanguagesService
     {
         $result = [];
         foreach ($array as $key => $value) {
-            if (is_array($value) && !empty($value)) {
-                $result += self::flattenWithDots($value, $prefix . $key . '.');
+            if (is_array($value)) {
+                if (empty($value)) {
+                    // Preserve empty arrays as empty arrays
+                    $result[$prefix . $key] = [];
+                } else {
+                    // Recurse into non-empty arrays
+                    $result += self::flattenWithDots($value, $prefix . $key . '.');
+                }
             } else {
                 $result[$prefix . $key] = $value;
             }
